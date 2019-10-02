@@ -1,0 +1,38 @@
+@(transfers: List[Transfer], finalized: Map[String, Boolean])
+
+@main("Discovered transfer") {
+  <div class="row">
+    <div class="col">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col-1">from vault</th>
+            <th scope="col-1">to vault</th>
+            <th scope="col-1">from vault name</th>
+            <th scope="col-1">to vault name</th>
+            <th scope="col-1">from vault balance</th>
+            <th scope="col-1">to vault balance</th>
+            <th scope="col-1">transfer amount</th>
+            <th scope="col-1">Block</th>
+            <th scope="col-1">Deploy</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(transfer <- transfers) {
+            <tr class=@{if(finalized(transfer.block)) "table-success" else "table-warning"}>
+              <td>@transfer.fromVault</td>
+              <td>@transfer.toVault</td>
+              <td>@transfer.fromName</td>
+              <td>@transfer.toName</td>
+              <td>@transfer.fromBalance</td>
+              <td>@transfer.toBalance</td>
+              <td>@transfer.amount</td>
+              <td class="overflow-auto small">@transfer.block</td>
+              <td class="overflow-auto small">@transfer.deploy</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}

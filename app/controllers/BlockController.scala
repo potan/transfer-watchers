@@ -178,7 +178,13 @@ object BlockLogic {
 
   final case class DeployTrace(`deploy-hash`: String, source: String, events: List[RhoEvent])
 
-  final case class BlockTracesReport(hash: String, traces: List[DeployTrace])
+  final case class BlockTracesReport(
+      hash: String,
+      `seq-num`: Int,
+      creator: String,
+      traces: List[DeployTrace],
+      parents: List[String]
+  )
 
   implicit val rhoProduceReads = Json.reads[RhoProduce]
   implicit val rhoConsumeReads = Json.reads[RhoConsume]

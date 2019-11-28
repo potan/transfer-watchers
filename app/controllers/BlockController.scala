@@ -9,6 +9,7 @@ import play.api.libs.json._
 import play.api.libs.json.Reads._
 import play.api.libs.functional.syntax._
 import models.BlockRepository
+import models.BlockGraph
 import scala.concurrent.{ExecutionContext, Future}
 import models.ParentsRepository
 import models.TransfersRepostitory
@@ -22,6 +23,7 @@ import services.BlockAdded
 @Singleton
 class BlockController @Inject()(
     cc: ControllerComponents,
+    blockGraph: BlockGraph,
     blockRepository: BlockRepository,
     parentRepository: ParentsRepository,
     transfersRepository: TransfersRepostitory,
@@ -55,6 +57,7 @@ class BlockController @Inject()(
 
   def processBlockAdded(value: BlockAdded) =
     for {
+      _ <- blockGraph.addBlock(value)
       bl <- blockRepository.create(value.`block-hash`, value.`seq-num`)
       _ <- if (bl == 0) Future.successful(())
       else
